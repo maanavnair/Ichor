@@ -1,0 +1,43 @@
+# --- Unity Folders to Ignore ---
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+[Uu]ser[Ss]ettings/
+
+# --- Asset Import Artifacts ---
+.utmp/
+
+# --- IDE (Visual Studio / VS Code) ---
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svclog
+
+# --- OS Junk ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Blender specific ---
+# Blender creates .blend1 files as backups. You don't want these in Git.
+*.blend1
+*.blend2
+
+# --- Crashes/Logs ---
+sysinfo.txt
+*.log
+
+# --- WebGL specific ---
+# If you build for web, ignore the output folder
+/[Bb]uild/
