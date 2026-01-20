@@ -15,7 +15,11 @@ public class Player : MonoBehaviour
     public float jumpGravity;
 
     public int facingDirection = 1;
-    public Vector2 moveInput;
+
+    //Inputs
+    private Vector2 moveInput;
+    private bool jumpPressed;
+    private bool jumpReleased;
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -30,15 +34,39 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        ApplyVariableGravity();
-        CheckGrounded();
         Flip();
     }
 
     void FixedUpdate()
     {
+        ApplyVariableGravity();
+        CheckGrounded();
+        HandleMovement();
+        HandleJump();
+    }
+
+    private void HandleMovement()
+    {
         float targetSpeed = moveInput.x * speed;
         rb.linearVelocity = new Vector2(targetSpeed, rb.linearVelocity.y);
+    }
+
+    private void HandleJump()
+    {
+        if(jumpPressed && isGrounded)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            jumpPressed = false;
+            jumpReleased = false;
+        }
+        if(jumpReleased)
+        {
+            if(rb.linearVelocity.y > 0) //still going up
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            }
+            jumpReleased = false;
+        }
     }
 
     void ApplyVariableGravity()
@@ -82,16 +110,14 @@ public class Player : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-        if(value.isPressed && isGrounded)
+        if(value.isPressed)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            jumpPressed = true;
+            jumpReleased = false;
         }
-        else
+        else //button is released
         {
-            if(rb.linearVelocity.y > 0)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
-            }
+            jumpReleased = true;
         }
     }
 
