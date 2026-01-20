@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     public float speed;
     public float jumpForce;
     public float jumpCutMultiplier = 0.5f;
+    public float normalGravity;
+    public float fallGravity;
+    public float jumpGravity;
 
     public int facingDirection = 1;
     public Vector2 moveInput;
@@ -20,8 +23,14 @@ public class Player : MonoBehaviour
     public LayerMask groundLayer;
     private bool isGrounded;
 
+    private void Start()
+    {
+        rb.gravityScale = normalGravity;
+    }
+
     void Update()
     {
+        ApplyVariableGravity();
         CheckGrounded();
         Flip();
     }
@@ -30,6 +39,22 @@ public class Player : MonoBehaviour
     {
         float targetSpeed = moveInput.x * speed;
         rb.linearVelocity = new Vector2(targetSpeed, rb.linearVelocity.y);
+    }
+
+    void ApplyVariableGravity()
+    {
+        if(rb.linearVelocity.y < -0.1f) //falling
+        {
+            rb.gravityScale = fallGravity;
+        }
+        else if(rb.linearVelocity.y > 0.1f) //rising
+        {
+            rb.gravityScale = jumpGravity;
+        }
+        else
+        {
+            rb.gravityScale = normalGravity;    
+        }
     }
 
     void CheckGrounded()
