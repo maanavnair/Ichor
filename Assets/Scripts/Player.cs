@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     [Header("Movement Variables")]
     public float speed;
     public float jumpForce;
+    public float jumpCutMultiplier = 0.5f;
 
     public int facingDirection = 1;
     public Vector2 moveInput;
@@ -59,6 +60,13 @@ public class Player : MonoBehaviour
         if(value.isPressed && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        }
+        else
+        {
+            if(rb.linearVelocity.y > 0)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            }
         }
     }
 
